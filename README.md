@@ -38,5 +38,7 @@ To launch the display using a Channel Access client:
 $ render-from-template files/model_config.yml ca test
 ```
 
-
-From another terminal window, launch the client using channel access:
+The pre-built read only client may be launched using:
+```
+$ bokeh serve client.py --show
+```
