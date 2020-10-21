@@ -4,9 +4,9 @@ channels:
   - bokeh
 dependencies:
   - python=3.7
-  - jupyter_bokeh==2.0.3
+  - jupyter_bokeh
   - lume-epics==0.5
-  - lume-model==0.7
+  - lume-model==0.8
   - pip
   - pip:
     - tensorflow
