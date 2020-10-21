@@ -20,7 +20,7 @@ $ conda activate lcls-cu-inj-live
 
 Serve the client using the test prefix:
 ```
-$ serve-from-temlate files/model_config.yml test
+$ serve-from-template files/model_config.yml test
 ```
 
 ## Client
