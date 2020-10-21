@@ -28,6 +28,7 @@ input_variables:
     name: distgen:total_charge:value
     units: pC
     default: 250.0
+    range: [250.0,250.0]
 
   SOL1:solenoid_field_scale:
     name: SOL1:solenoid_field_scale
@@ -63,6 +64,7 @@ input_variables:
     is_constant: True
     units: V
     default: 70000000.0
+    range: [70000000.0,70000000.0]
 
   end_mean_z:
     name: end_mean_z
