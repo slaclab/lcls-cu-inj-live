@@ -16,6 +16,14 @@ Once complete, activate the environment:
 $ conda activate lcls-cu-inj-live
 ```
 
+If using custom classes or models defined in the repository, the repository root must be included in the pythonpath.
+
+From repostitory root:
+
+```
+$ export PYTHONPATH = $(pwd)
+```
+
 ## Server
 
 Serve the client using the test prefix:
