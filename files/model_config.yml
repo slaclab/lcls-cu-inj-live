@@ -1,0 +1,210 @@
+model:
+  kwargs:
+    model_file: files/model_1b_AS_f_xy.h5
+    custom_layers:
+      ScaleLayer: model.ScaleLayer
+      UnScaleLayer: model.UnScaleLayer
+      UnScaleImg: model.UnScaleImg
+  model_class: model.FormattedKerasModel
+
+input_variables:
+  distgen:r_dist:sigma_xy:value:
+    type: scalar
+    name: distgen:r_dist:sigma_xy:value
+    units: mm
+    default: 0.4130
+    range: [0.2000128411163704, 0.499960029319067]
+
+  distgen:t_dist:length:value: 
+    type: scalar
+    name: distgen:t_dist:length:value
+    units: ps
+    default: 7.499772441611215
+    range: [3.0000935388576626, 11.999451344364768]
+
+  distgen:total_charge:value:
+    type: scalar
+    is_constant: True
+    name: distgen:total_charge:value
+    units: pC
+    default: 250.0
+
+  SOL1:solenoid_field_scale:
+    name: SOL1:solenoid_field_scale
+    type: scalar
+    units: T
+    default: 0.2460
+    range: [0.15000051301097236, 0.29998391898360177]
+
+  CQ01:b1_gradient:
+    name: CQ01:b1_gradient
+    type: scalar
+    units: T/m
+    default: -0.0074
+    range: [-0.009999961444754046, 0.009997330500373847]
+
+  SQ01:b1_gradient:
+    name: SQ01:b1_gradient
+    type: scalar
+    units: T/m
+    default: -0.0074
+    range: [-0.009999961444754046, 0.009997330500373847]
+
+  L0A_phase:dtheta0_deg:
+    name: L0A_phase:dtheta0_deg
+    type: scalar
+    units: deg
+    default: -8.8997
+    range: [-24.999227856965984, 9.99975747834471]
+
+  L0A_scale:voltage:
+    name: L0A_scale:voltage
+    type: scalar
+    is_constant: True
+    units: V
+    default: 70000000.0
+
+  end_mean_z:
+    name: end_mean_z
+    type: scalar
+    units: m
+    default: 4.6147002
+    range: [4.6143255, 4.6150749]
+
+output_variables:
+  end_n_particle:
+    name: end_n_particle
+    type: scalar
+    units: 1
+
+  end_mean_gamma:
+    name: end_mean_gamma
+    type: scalar
+    units: 1
+
+  end_sigma_gamma:
+    name: end_sigma_gamma
+    type: scalar
+    units: 1
+
+  end_mean_x:
+    name: end_mean_x
+    type: scalar
+    units: m
+
+  end_mean_y:
+    name: end_mean_y
+    type: scalar
+    units: m
+
+  end_norm_emit_x:
+    name: end_norm_emit_x
+    type: scalar
+    units: m
+
+  end_norm_emit_y:
+    name: end_norm_emit_y
+    type: scalar
+    units: m
+  
+  end_norm_emit_z:
+    name: end_norm_emit_z
+    type: scalar
+    units: m
+
+  end_sigma_x:
+    name: end_sigma_x
+    type: scalar
+    units: m
+  
+  end_sigma_y:
+    name: end_sigma_y
+    type: scalar
+    units: m
+
+  end_sigma_z:
+    name: end_sigma_z
+    type: scalar
+    units: m
+
+  end_mean_px:
+    name: end_mean_px
+    type: scalar
+    units: eV/c
+
+  end_mean_py:
+    name: end_mean_py
+    type: scalar
+    units: eV/c
+  
+  end_mean_pz:
+    name: end_mean_pz
+    type: scalar
+    units: eV/c
+
+  end_sigma_px:
+    name: end_sigma_px
+    type: scalar
+    units: eV/c
+
+  end_sigma_py:
+    name: end_sigma_py
+    type: scalar
+    units: eV/c
+  
+  end_sigma_pz:
+    name: end_sigma_pz
+    type: scalar
+    units: eV/c
+
+  end_higher_order_energy_spread:
+    name: end_higher_order_energy_spread
+    type: scalar
+    units: eV
+
+  end_cov_x__px:
+    name: end_cov_x__px
+    type: scalar
+    units: m-eV/c
+  
+  end_cov_y__py:
+    name: end_cov_y__py
+    type: scalar
+    units: m-eV/c
+  
+  end_cov_z__pz:
+    name: end_cov_z__pz
+    type: scalar
+    units: m-eV/c
+
+  x:y:
+    name: x:y
+    type: image
+    x_units: m
+    y_units: m
+    x_label: x
+    y_label: y
+    x_min_variable: out_xmin
+    x_max_variable: out_xmax
+    y_min_variable: out_ymin
+    y_max_variable: out_ymax
+
+  out_ymax:
+    name: out_ymax
+    type: scalar
+    parent_variable: x:y
+
+  out_xmax:
+    name: out_xmax
+    type: scalar
+    parent_variable: x:y
+  
+  out_ymin:
+    name: out_ymin
+    type: scalar
+    parent_variable: x:y
+  
+  out_xmin:
+    name: out_xmin
+    type: scalar
+    parent_variable: x:y

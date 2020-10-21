@@ -1,0 +1,12 @@
+name: lcls-cu-inj-live
+channels:
+  - jrgarrahan
+  - bokeh
+dependencies:
+  - python=3.7
+  - jupyter_bokeh==2.0.3
+  - lume-epics==0.5
+  - lume-model==0.7
+  - pip
+  - pip:
+    - tensorflow
