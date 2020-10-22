@@ -36,14 +36,14 @@ $ serve-from-template files/model_config.yml test
 The client for this demo may be launched either using the tools packaged with `lume-epics` for auto client generation or with the custom built client. Using the `lume-epics` tools, the client may be launched using the command:
 
 ```
-$ render-from-template {FILENAME} {PROTOCOL} {PREFIX} --read-only
+$ render-from-template {FILENAME} {PREFIX} {PROTOCOL} --read-only
 ```
 The optional read-only flag determines whether the client will be launched with controls. Clients rendered in read-only mode will also produce a striptool per scalar variable as opposed to a striptool with the selection option.
 
 To launch the display using a Channel Access client:
 
 ```
-$ render-from-template files/model_config.yml ca test
+$ render-from-template files/model_config.yml test ca
 ```
 
 The pre-built read only client may be launched using:
