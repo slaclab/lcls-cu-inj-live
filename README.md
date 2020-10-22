@@ -13,7 +13,7 @@ $ conda env create -f environment.yml
 Once complete, activate the environment:
 
 ```
-$ conda activate lcls-cu-inj-live
+$ conda activate lcls-cu-inj-lives
 ```
 
 If using custom classes or models defined in the repository, the repository root must be included in the pythonpath.
@@ -21,7 +21,7 @@ If using custom classes or models defined in the repository, the repository root
 From repostitory root:
 
 ```
-$ export PYTHONPATH = $(pwd)
+$ export PYTHONPATH=$(pwd)
 ```
 
 ## Server
