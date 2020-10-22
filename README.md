@@ -16,12 +16,12 @@ Once complete, activate the environment:
 $ conda activate lcls-cu-inj-live
 ```
 
-If using custom classes or models defined in the repository, the repository root must be included in the pythonpath.
+If using custom classes or models defined in the repository, the repository root must be included in the PYTHONPATH.
 
 From repostitory root:
 
 ```
-$ export PYTHONPATH = $(pwd)
+$ export PYTHONPATH=$(pwd)
 ```
 
 ## Server
