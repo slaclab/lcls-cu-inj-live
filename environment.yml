@@ -4,10 +4,10 @@ channels:
   - bokeh
   - conda-forge
 dependencies:
-  - python=3.7
-  - bokeh
-  - lume-epics==0.7
-  - lume-model==0.8
+  - python =3.7
+  - bokeh ==2.2.3
+  - lume-epics ==0.7
+  - lume-model ==0.8
   - pip
   - pip:
     - tensorflow
