@@ -12,7 +12,7 @@ The following is the start of a task list. Please edit.
   - [ ] Translate previous demo into here.
   - [ ] Update with the latest NN model.
   - [ ] Add Bridge for translating PV values <-> Model variables.
-  - [ ] Use .csv  from https://github.com/slaclab/lcls-cu-inj-surrogate/blob/master/pv_mapping/cu_inj_impact.csv
+  - [x] Use .csv  from https://github.com/slaclab/lcls-cu-inj-surrogate/blob/master/pv_mapping/cu_inj_impact.csv
  
   - [ ] Decide where to host at SLAC
   - [ ] Deploy at SLAC, reading live PVs
