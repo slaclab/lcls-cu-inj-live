@@ -1,7 +1,6 @@
 name: lcls-cu-inj-live
 channels:
   - jrgarrahan
-  - bokeh
   - conda-forge
 dependencies:
   - python =3.7
