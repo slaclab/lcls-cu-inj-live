@@ -33,7 +33,7 @@ class Bridge:
                 continue
 
             logger.debug(f'Creating pv: {pvname}')
-
+            logger.debug(f'Creating model pv: {self._model_pv_prefix}{impact_name}')
             try:
                 pvname.strip()
             except:
@@ -60,6 +60,7 @@ class Bridge:
 
     def _dispatch(self, model_pv, model_value):
         if not model_pv.connected:
+            logger.debug(f'Skipping dispatch as model PV is disconnected: {model_pv}')
             return
         logger.debug(f'Writing value: {model_value} into: {model_pv}')
         model_pv.put(model_value)
