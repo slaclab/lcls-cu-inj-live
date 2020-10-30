@@ -2,7 +2,7 @@ from bokeh.io import curdoc
 from bokeh.layouts import column, row, gridplot
 from bokeh.server.server import Server
 from bokeh import palettes
-from bokeh.models import Div, Label
+from bokeh.models import Div, Label, Spacer, ColumnDataSource, TableColumn, StringFormatter, DataTable
 from lume_epics.client.controller import Controller
 
 from lume_epics.client.widgets.tables import ValueTable 
@@ -32,9 +32,45 @@ class CustomStriptool(Striptool):
         self.source.data = dict(x=ts, y=ys)
 
 
+
+# Override datatable update. Use sig digits
+class CustomValueTable(ValueTable):
+
+    def update(self, sig_digits=4) -> None:
+        """
+        Callback function to update data source to reflect updated values.
+        """
+        for variable in self.pv_monitors:
+            v = self.pv_monitors[variable].poll()
+            self.output_values[variable] = round(v, sig_digits)
+
+        x_vals = [self.labels[var] for var in self.output_values.keys()]
+        y_vals = list(self.output_values.values())
+        self.source.data = dict(x=x_vals, y=y_vals)
+
+    def create_table(self) -> None:
+        """
+        Creates the bokeh table and populates variable data.
+        """
+        x_vals = [self.labels[var] for var in self.output_values.keys()]
+        y_vals = list(self.output_values.values())
+        
+        table_data = dict(x=x_vals, y=y_vals)
+        self.source = ColumnDataSource(table_data)
+        columns = [
+            TableColumn(
+                field="x", title="Variable", formatter=StringFormatter(font_style="bold")
+            ),
+            TableColumn(field="y", title="Value"),
+        ]
+
+        self.table = DataTable(
+            source=self.source, columns=columns, sizing_mode="stretch_both", index_position=None
+        )
+
 protocol = "pva"
 prefix = "test"
-striptool_limit =50
+striptool_limit = 10 *  4 * 60 # 10 mins x callbacks / second * seconds/min
 controller = Controller(protocol)
 
 pal = palettes.viridis(256)
@@ -53,7 +89,7 @@ variable_params = [
     "CQ01:b1_gradient",
     "SQ01:b1_gradient",
     "L0A_phase:dtheta0_deg",
-    "end_mean_z",
+#    "end_mean_z",
 ]
 
 # track constants
@@ -64,17 +100,15 @@ constants = [
 
 
 
-value_table = ValueTable(input_variables.values(), controller, prefix)
+value_table = CustomValueTable([input_variables[var] for var in variable_params], controller, prefix)
 
 callbacks.append(value_table.update)
-value_table.table.width_policy = "min"
-value_table.table.height_policy = "fit"
+value_table.table.sizing_mode="scale_both"
 
 # build input striptools
 striptools = []
 for variable in variable_params:
     striptool = CustomStriptool([input_variables[variable]], controller, prefix, limit=striptool_limit)
-   # striptool.plot.yaxis.axis_label = input_labels[variable] + f" ({striptool.pv_monitors[variable].units})"
     striptool.plot.xaxis.axis_label_text_font_size = '7pt'
     striptool.plot.yaxis.axis_label_text_font_size = '7pt'
     striptool.plot.xaxis.major_label_text_font_size = "6pt"
@@ -83,8 +117,8 @@ for variable in variable_params:
     striptools.append(striptool.plot)
 
 
-striptool_grid =  gridplot(striptools,  ncols=4, sizing_mode="scale_both")
-input_row = row(column(value_table.table, sizing_mode = "stretch_height", width=300), column(striptool_grid, sizing_mode="scale_both"), sizing_mode="scale_both")
+striptool_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools = True, toolbar_location=None)
+input_row = row(column(value_table.table, sizing_mode="fixed", width=300), column(striptool_grid, sizing_mode="scale_both"), sizing_mode="scale_both")
 
 image="x:y"
 
@@ -129,9 +163,8 @@ output_labels = {
 
 output_row = row()
 
-output_value_table = ValueTable([output_variables[var] for var in scalar_outputs], controller, prefix)
-output_value_table.table.width_policy = "min"
-output_value_table.table.height_policy = "fit"
+output_value_table = CustomValueTable([output_variables[var] for var in scalar_outputs], controller, prefix)
+output_value_table.table.sizing_mode = "scale_both"
 callbacks.append(output_value_table.update)
 
 # build output striptools
@@ -150,21 +183,23 @@ image = ImagePlot([output_variables["x:y"]], controller, prefix)
 image.build_plot(pal)
 image.plot.xaxis.major_label_text_font_size = "6pt"
 image.plot.yaxis.major_label_text_font_size = "6pt"
+image.plot.sizing_mode = "scale_both"
+image.plot.aspect_ratio= 1.25
+image.plot.toolbar_location=None
 callbacks.append(image.update)
 
-grid1 = gridplot(striptools,  ncols=3, sizing_mode="scale_both")
+grid1 = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
-#image_row = row(column(image.plot, sizing_mode="fixed", width=300, height=300), grid1, sizing_mode="scale_both")
+spacer = Spacer(width=600)
+output_row = column(row(column(output_value_table.table, sizing_mode="scale_both", width=300), column(image.plot, sizing_mode="scale_both"), spacer), grid1, sizing_mode="scale_both")
 
-output_row = row(column(output_value_table.table, sizing_mode="stretch_height", width=300),
-                column(image.plot, sizing_mode="stretch_height", width=350),
-                column(grid1, sizing_mode="scale_both"), sizing_mode="scale_both")
 title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': 'blue'})
 output_div = Div(text="<b>MODEL OUTPUT</b>", style={'font-size': '150%', 'color': 'blue'})
 
 curdoc().add_root(
-    column(row(title_div), input_row,  row(output_div),output_row,sizing_mode="fixed", height=300, width=1200)
+    column(row(output_div), output_row, row(title_div), input_row, sizing_mode="scale_both", height=675, width=1200)
 )
+
 
 for callback in callbacks:
     curdoc().add_periodic_callback(callback, 250)
