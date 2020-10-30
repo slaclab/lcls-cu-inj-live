@@ -1,12 +1,17 @@
 #!/bin/bash
-set -m
-
-killjobs() {
-    for x in $(jobs | awk -F '[][]' '{print $2}' ) ; do
-        kill %$x
-    done
-}
-trap killjobs EXIT
 
 start_model_bridge &
-start_webserver
+model_pid=$!
+start_webserver &
+web_pid=$!
+
+
+cat <<EOT >> kill_model.bash
+#!/bin/bash
+kill -9 ${model_pid}
+EOT
+
+cat <<EOT >> kill_web.bash
+#!/bin/bash
+kill -9 ${web_pid}
+EOT
