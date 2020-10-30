@@ -89,7 +89,6 @@ variable_params = [
     "CQ01:b1_gradient",
     "SQ01:b1_gradient",
     "L0A_phase:dtheta0_deg",
-#    "end_mean_z",
 ]
 
 # track constants
@@ -98,12 +97,10 @@ constants = [
     "L0A_scale:voltage"
 ]
 
+input_value_table = CustomValueTable([input_variables[var] for var in variable_params], controller, prefix)
 
-
-value_table = CustomValueTable([input_variables[var] for var in variable_params], controller, prefix)
-
-callbacks.append(value_table.update)
-value_table.table.sizing_mode="scale_both"
+callbacks.append(input_value_table.update)
+input_value_table.table.sizing_mode="scale_both"
 
 # build input striptools
 striptools = []
@@ -117,38 +114,18 @@ for variable in variable_params:
     striptools.append(striptool.plot)
 
 
-striptool_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools = True, toolbar_location=None)
-input_row = row(column(value_table.table, sizing_mode="fixed", width=300), column(striptool_grid, sizing_mode="scale_both"), sizing_mode="scale_both")
+input_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools = True, toolbar_location=None)
 
 image="x:y"
 
 # Render outputs
 scalar_outputs = [
     "end_n_particle",
-#    "end_mean_gamma",
-#    "end_sigma_gamma",
-#    "end_mean_x",
-#    "end_mean_y",
     "end_norm_emit_x",
     "end_norm_emit_y",
-#    "end_norm_emit_z",
     "end_sigma_x",
     "end_sigma_y",
-#    "end_sigma_z",
-#    "end_mean_px",
-#    "end_mean_py",
-#    "end_mean_pz",
-#    "end_sigma_px",
-#    "end_sigma_py",
-#    "end_sigma_pz",
     "end_higher_order_energy_spread",
-#    "end_cov_x__px",
-#    "end_cov_y__py",
-#    "end_cov_z__pz",
-#    "out_ymax",
-#    "out_xmax",
-#    "out_ymin",
-#    "out_xmin",
 ]
 
 output_labels = {
@@ -184,22 +161,28 @@ image.build_plot(pal)
 image.plot.xaxis.major_label_text_font_size = "6pt"
 image.plot.yaxis.major_label_text_font_size = "6pt"
 image.plot.sizing_mode = "scale_both"
-image.plot.aspect_ratio= 1.25
 image.plot.toolbar_location=None
 callbacks.append(image.update)
 
-grid1 = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
+output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
-spacer = Spacer(width=600)
-output_row = column(row(column(output_value_table.table, sizing_mode="scale_both", width=300), column(image.plot, sizing_mode="scale_both"), spacer), grid1, sizing_mode="scale_both")
-
-title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': 'blue'})
-output_div = Div(text="<b>MODEL OUTPUT</b>", style={'font-size': '150%', 'color': 'blue'})
+title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': 'blue', 'text-align': 'center'})
+input_div_label = Div(text="<b>INPUTS</b>", style={'font-size': '150%', 'color': 'blue'})
+output_div_label = Div(text="<b>OUTPUTS</b>", style={'font-size': '150%', 'color': 'blue'})
 
 curdoc().add_root(
-    column(row(output_div), output_row, row(title_div), input_row, sizing_mode="scale_both", height=675, width=1200)
-)
+    column(
+        row(
+            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), column(output_div_label, image.plot, sizing_mode="scale_both"), column(Spacer(height=30), output_value_table.table, sizing_mode="scale_width"), sizing_mode="scale_both"
+        ),
+        input_div_label,
+        input_grid,
+        output_div_label,
+        output_grid,
+        height = 675, width=1200, sizing_mode="scale_both"
+    )
 
+)
 
 for callback in callbacks:
     curdoc().add_periodic_callback(callback, 250)
