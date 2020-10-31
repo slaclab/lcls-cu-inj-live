@@ -4,6 +4,7 @@ from bokeh.server.server import Server
 from bokeh import palettes
 from bokeh.models import Div, Label, Spacer, ColumnDataSource, TableColumn, StringFormatter, DataTable
 from lume_epics.client.controller import Controller
+from bokeh.models.widgets import HTMLTemplateFormatter
 
 from lume_epics.client.widgets.tables import ValueTable 
 from lume_epics.client.widgets.controls import build_sliders, EntryTable
@@ -32,6 +33,14 @@ class CustomStriptool(Striptool):
         self.source.data = dict(x=ts, y=ys)
 
 
+template="""
+            <span style="font-size:18px">
+                <%= value %>
+            </span>
+         """
+
+formatter =  HTMLTemplateFormatter(template=template)
+
 
 # Override datatable update. Use sig digits
 class CustomValueTable(ValueTable):
@@ -59,13 +68,13 @@ class CustomValueTable(ValueTable):
         self.source = ColumnDataSource(table_data)
         columns = [
             TableColumn(
-                field="x", title="Variable", formatter=StringFormatter(font_style="bold")
+                field="x", title="Variable", formatter=formatter
             ),
-            TableColumn(field="y", title="Value"),
+            TableColumn(field="y", title="Value", formatter=formatter),
         ]
 
         self.table = DataTable(
-            source=self.source, columns=columns, sizing_mode="stretch_both", index_position=None
+            source=self.source, columns=columns, index_position=None, autosize_mode = "fit_columns"
         )
 
 protocol = "pva"
@@ -100,7 +109,6 @@ constants = [
 input_value_table = CustomValueTable([input_variables[var] for var in variable_params], controller, prefix)
 
 callbacks.append(input_value_table.update)
-input_value_table.table.sizing_mode="scale_both"
 
 # build input striptools
 striptools = []
@@ -141,7 +149,6 @@ output_labels = {
 output_row = row()
 
 output_value_table = CustomValueTable([output_variables[var] for var in scalar_outputs], controller, prefix)
-output_value_table.table.sizing_mode = "scale_both"
 callbacks.append(output_value_table.update)
 
 # build output striptools
@@ -173,7 +180,7 @@ output_div_label = Div(text="<b>OUTPUTS</b>", style={'font-size': '150%', 'color
 curdoc().add_root(
     column(
         row(
-            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), column(output_div_label, image.plot, sizing_mode="scale_both"), column(Spacer(height=30), output_value_table.table, sizing_mode="scale_width"), sizing_mode="scale_both"
+            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), column(output_div_label, image.plot, sizing_mode="scale_both"), column(Spacer(height=30), output_value_table.table, sizing_mode="scale_width"), sizing_mode="scale_both", height_policy="fit"
         ),
         input_div_label,
         input_grid,
