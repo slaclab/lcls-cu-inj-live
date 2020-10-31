@@ -36,13 +36,13 @@ class CustomStriptool(Striptool):
 # Override datatable update. Use sig digits
 class CustomValueTable(ValueTable):
 
-    def update(self, sig_digits=4) -> None:
+    def update(self) -> None:
         """
         Callback function to update data source to reflect updated values.
         """
         for variable in self.pv_monitors:
             v = self.pv_monitors[variable].poll()
-            self.output_values[variable] = round(v, sig_digits)
+            self.output_values[variable] = "{0:.4g}".format(v)
 
         x_vals = [self.labels[var] for var in self.output_values.keys()]
         y_vals = list(self.output_values.values())
