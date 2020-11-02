@@ -16,5 +16,5 @@ trap killjobs EXIT
 MODEL_PV_PREFIX=test
 
 serve-from-template files/model_config.yml "${MODEL_PV_PREFIX}" &
-sleep 5
+sleep 10
 python bridge.py --model_pv_prefix "${MODEL_PV_PREFIX}:"

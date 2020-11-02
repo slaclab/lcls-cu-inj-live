@@ -1,17 +1,6 @@
 #!/bin/bash
 
-start_model_bridge &
+./start_model_bridge &
 model_pid=$!
-start_webserver &
+./start_webserver &
 web_pid=$!
-
-
-cat <<EOT >> kill_model.bash
-#!/bin/bash
-kill -9 ${model_pid}
-EOT
-
-cat <<EOT >> kill_web.bash
-#!/bin/bash
-kill -9 ${web_pid}
-EOT
