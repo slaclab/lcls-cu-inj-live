@@ -1,0 +1,20 @@
+#!/bin/bash
+source $PACKAGE_TOP/anaconda/envs/lume-demo/bin/activate
+export PYTHONPATH=$(pwd):$PYTHONPATH
+source $EPICS_SETUP/envSet_prodOnDev.bash
+export EPICS_CA_ADDR_LIST="$EPICS_CA_ADDR_LIST 127.255.255.255"
+
+set -m
+
+killjobs() {
+    for x in $(jobs | awk -F '[][]' '{print $2}' ) ; do
+        kill %$x
+    done
+}
+trap killjobs EXIT
+
+MODEL_PV_PREFIX=test
+
+serve-from-template files/model_config.yml "${MODEL_PV_PREFIX}" &
+sleep 10
+python bridge.py --model_pv_prefix "${MODEL_PV_PREFIX}:"

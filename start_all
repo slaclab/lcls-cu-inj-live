@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./start_model_bridge &
+model_pid=$!
+./start_webserver &
+web_pid=$!
