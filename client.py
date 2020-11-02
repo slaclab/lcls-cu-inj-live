@@ -1,3 +1,5 @@
+import argparse
+
 from bokeh.io import curdoc
 from bokeh.layouts import column, row, gridplot
 from bokeh.server.server import Server
@@ -5,6 +7,7 @@ from bokeh import palettes
 from bokeh.models import Div, Label, Spacer, ColumnDataSource, TableColumn, StringFormatter, DataTable
 from lume_epics.client.controller import Controller
 from bokeh.models.widgets import HTMLTemplateFormatter
+from bokeh.themes import built_in_themes
 
 from lume_epics.client.widgets.tables import ValueTable 
 from lume_epics.client.widgets.controls import build_sliders, EntryTable
@@ -13,9 +16,23 @@ from lume_epics.client.widgets.plots import Striptool, ImagePlot
 from bokeh.util.compiler import TypeScript
 from lume_model.utils import variables_from_yaml
 
+import sys
+
+parser = argparse.ArgumentParser(description='Parse bokeh args.')
+parser.add_argument('prefix', type=str, help='Prefix for process variables.')
+parser.add_argument('protocol', type=str, help="Protocol for accessing pvs.", choices=["pva", "ca"])
+
+args = parser.parse_args()
+prefix = args.prefix
+protocol = args.protocol
+
 
 # Override striptool update. Label was being replaced
 class CustomStriptool(Striptool):
+    """Custom class to override the default Striptool update where label was replaced 
+    depending on the live process variable.
+
+    """
 
     def update(self) -> None:
         """
@@ -33,6 +50,8 @@ class CustomStriptool(Striptool):
         self.source.data = dict(x=ts, y=ys)
 
 
+
+# Use custom text size for table
 template="""
             <span style="font-size:18px">
                 <%= value %>
@@ -44,6 +63,10 @@ formatter =  HTMLTemplateFormatter(template=template)
 
 # Override datatable update. Use sig digits
 class CustomValueTable(ValueTable):
+    """
+    Overrides datatable to use significant digits and update font size
+
+    """
 
     def update(self) -> None:
         """
@@ -77,8 +100,7 @@ class CustomValueTable(ValueTable):
             source=self.source, columns=columns, index_position=None, autosize_mode = "fit_columns"
         )
 
-protocol = "pva"
-prefix = "test"
+
 striptool_limit = 10 *  4 * 60 # 10 mins x callbacks / second * seconds/min
 controller = Controller(protocol)
 
@@ -106,11 +128,12 @@ constants = [
     "L0A_scale:voltage"
 ]
 
-input_value_table = CustomValueTable([input_variables[var] for var in variable_params], controller, prefix)
 
+# set up input value table
+input_value_table = CustomValueTable([input_variables[var] for var in variable_params], controller, prefix)
 callbacks.append(input_value_table.update)
 
-# build input striptools
+# build input striptools, updating label sizes
 striptools = []
 for variable in variable_params:
     striptool = CustomStriptool([input_variables[variable]], controller, prefix, limit=striptool_limit)
@@ -121,12 +144,13 @@ for variable in variable_params:
     callbacks.append(striptool.update)
     striptools.append(striptool.plot)
 
-
+# set up the input striptool grid
 input_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools = True, toolbar_location=None)
 
+
+# filter variables
 image="x:y"
 
-# Render outputs
 scalar_outputs = [
     "end_n_particle",
     "end_norm_emit_x",
@@ -136,6 +160,7 @@ scalar_outputs = [
     "end_higher_order_energy_spread",
 ]
 
+# create labels to be used with output striptool
 output_labels = {
     "end_n_particle": "n_particles",
     "end_norm_emit_x": "norm emit x",
@@ -145,13 +170,11 @@ output_labels = {
     "end_higher_order_energy_spread": "higher order energy spread",
 }
 
-
-output_row = row()
-
+# set up output value table
 output_value_table = CustomValueTable([output_variables[var] for var in scalar_outputs], controller, prefix)
 callbacks.append(output_value_table.update)
 
-# build output striptools
+# build output striptools and update settings 
 striptools = []
 for variable in scalar_outputs:
     striptool = CustomStriptool([output_variables[variable]], controller, prefix, limit=striptool_limit)
@@ -171,6 +194,7 @@ image.plot.sizing_mode = "scale_both"
 image.plot.toolbar_location=None
 callbacks.append(image.update)
 
+
 output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
 title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': 'blue', 'text-align': 'center'})
@@ -188,8 +212,8 @@ curdoc().add_root(
         output_grid,
         height = 675, width=1200, sizing_mode="scale_both"
     )
-
 )
+curdoc().theme = 'dark_minimal'
 
 for callback in callbacks:
     curdoc().add_periodic_callback(callback, 250)
