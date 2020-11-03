@@ -3,6 +3,7 @@ from typing import Tuple, List
 from datetime import datetime
 import time
 import numpy as np
+
 from bokeh.plotting import figure
 from bokeh.io import curdoc
 from bokeh.layouts import column, row, gridplot
@@ -20,7 +21,6 @@ from lume_epics.client.widgets.plots import Striptool, ImagePlot
 from lume_epics.client.monitors import PVTimeSeries
 
 
-from bokeh.util.compiler import TypeScript
 from lume_model.utils import variables_from_yaml
 from lume_model.variables import ScalarVariable
 import sys
@@ -34,13 +34,6 @@ prefix = args.prefix
 protocol = args.protocol
 
 
-
-def time_to_microseconds(t):
-    t = t.time()
-    dmin = datetime.min
-    dummy_tdelta = (datetime.combine(dmin, t) - dmin)
-    return dummy_tdelta.total_seconds()*1000
-
 class PVTimeSeriesTimestamped(PVTimeSeries):
     def poll(self) -> Tuple[np.ndarray]:
         """
@@ -48,7 +41,7 @@ class PVTimeSeriesTimestamped(PVTimeSeries):
 
         """
         t = datetime.now()
-    #    t = time_to_microseconds(t)
+
         v = self.controller.get_value(self.pvname)
 
         self.time = np.append(self.time, t)
@@ -283,7 +276,7 @@ for variable in variable_params:
     striptool = CustomStriptool([input_variables[variable]], controller, prefix, limit=striptool_limit)
     striptool.plot.xaxis.axis_label_text_font_size = '7pt'
     striptool.plot.yaxis.axis_label_text_font_size = '7pt'
-    striptool.plot.xaxis.major_label_text_font_size = "8pt"
+    striptool.plot.xaxis.major_label_text_font_size = "7pt"
     striptool.plot.yaxis.major_label_text_font_size = "6pt"
     callbacks.append(striptool.update)
     striptools.append(striptool.plot)
@@ -325,7 +318,7 @@ for variable in scalar_outputs:
     striptool.plot.yaxis.axis_label = output_labels[variable] + f" ({striptool.pv_monitors[variable].units})"
     striptool.plot.xaxis.axis_label_text_font_size = '7pt'
     striptool.plot.yaxis.axis_label_text_font_size = '7pt'
-    striptool.plot.xaxis.major_label_text_font_size = "8pt"
+    striptool.plot.xaxis.major_label_text_font_size = "7pt"
     striptool.plot.yaxis.major_label_text_font_size = "6pt"
     striptools.append(striptool.plot)
 

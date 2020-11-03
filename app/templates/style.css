@@ -24,15 +24,15 @@ body { background-color: #15191C;
 
 .box {
         display: block;
-        height: calc(88vh-10px);
-        width: 157vh;
-        max-width: 157vh;
-        max-height: 88vh;
+        height: calc(85vh-20px);
+        width: 150vh;
+        max-width: 150vh;
+        max-height: 85vh;
 }
 
 .centered-text {
     display : block;
     margin : 0 auto;
     text-align: center;
-    width: 157vh;
+    width: 150vh;
 }
