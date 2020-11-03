@@ -23,6 +23,8 @@ body { background-color: #15191C;
 
 .box {
         display: block;
-        height: 66vh;
-        max-width: 118vh;
+        height: calc(88vh-10px);
+        width: 157vh;
+        max-width: 157vh;
+        max-height: 88vh;
 }

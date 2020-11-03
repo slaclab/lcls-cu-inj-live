@@ -1,5 +1,6 @@
 import argparse
 
+from bokeh.plotting import figure
 from bokeh.io import curdoc
 from bokeh.layouts import column, row, gridplot
 from bokeh.server.server import Server
@@ -25,6 +26,63 @@ parser.add_argument('protocol', type=str, help="Protocol for accessing pvs.", ch
 args = parser.parse_args()
 prefix = args.prefix
 protocol = args.protocol
+
+
+class FixedImagePlot(ImagePlot):
+    def build_plot(
+        self, palette, color_mapper=None
+    ) -> None:
+        """
+        Creates the plot object.
+
+        Args:
+            palette (Optional[tuple]): Bokeh color palette to use for plot.
+
+            color_mapper (Optional[ColorMapper]): Bokeh color mapper for rendering 
+                plot.
+
+        """
+        # create plot
+        self.plot = figure(
+            tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")],
+                sizing_mode="scale_both", x_range=(-8e-4,8e-4), y_range=(-8e-4,8e-4)
+        )
+
+        if color_mapper:
+            self.plot.image(
+                name="image_plot",
+                image="image",
+                x="x",
+                y="y",
+                dw="dw",
+                dh="dh",
+                source=self.source,
+                color_mapper=color_mapper,
+            )
+        elif palette:
+            self.plot.image(
+                name="image_plot",
+                image="image",
+                x="x",
+                y="y",
+                dw="dw",
+                dh="dh",
+                source=self.source,
+                palette=palette,
+            )
+
+        axis_labels = self.pv_monitors[self.live_variable].axis_labels
+        axis_units = self.pv_monitors[self.live_variable].axis_units
+
+        x_axis_label = axis_labels[0]
+        y_axis_label = axis_labels[1]
+
+        if axis_units:
+            x_axis_label += " (" + axis_units[0] + ")"
+            y_axis_label += " (" + axis_units[1] + ")"
+
+        self.plot.xaxis.axis_label = x_axis_label
+        self.plot.yaxis.axis_label = y_axis_label
 
 
 # Override striptool update. Label was being replaced
@@ -137,7 +195,6 @@ for variable in variable_params:
 # set up the input striptool grid
 input_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools = True, toolbar_location=None)
 
-
 # filter variables
 image="x:y"
 
@@ -184,6 +241,15 @@ image.plot.sizing_mode = "scale_both"
 image.plot.toolbar_location=None
 callbacks.append(image.update)
 
+# fixed image
+fixed_image = FixedImagePlot([output_variables["x:y"]], controller, prefix)
+fixed_image.build_plot(pal)
+fixed_image.plot.xaxis.major_label_text_font_size = "6pt"
+fixed_image.plot.yaxis.major_label_text_font_size = "6pt"
+fixed_image.plot.sizing_mode = "scale_both"
+fixed_image.plot.toolbar_location=None
+callbacks.append(fixed_image.update)
+
 
 output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
@@ -194,9 +260,10 @@ curdoc().theme="dark_minimal"
 curdoc().add_root(
     column(
         row(
-            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), 
-            column(output_div_label, image.plot, sizing_mode="scale_both"), 
-            column(Spacer(height=30), output_value_table.table, sizing_mode="scale_width"), 
+            column(input_div_label, input_value_table.table, sizing_mode="scale_width"), 
+            column(output_div_label, output_value_table.table, sizing_mode="scale_width"), 
+            column(image.plot, sizing_mode="scale_both"),
+            column(fixed_image.plot, sizing_mode="scale_both"),
             sizing_mode="scale_both", 
         ),
         input_div_label,
