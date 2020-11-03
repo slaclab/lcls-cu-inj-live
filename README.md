@@ -47,10 +47,10 @@ $ render-from-template files/model_config.yml ca test
 ```
 
 The pre-built read only client may be launched using:
+
 ```
 $ bokeh serve app --args {PREFIX} {PROTOCOL}
 ```
-
 
 ## Instructions to run at LCLS
 
