@@ -48,7 +48,7 @@ class PVTimeSeriesTimestamped(PVTimeSeries):
 
         """
         t = datetime.now()
-        t = time_to_microseconds(t)
+    #    t = time_to_microseconds(t)
         v = self.controller.get_value(self.pvname)
 
         self.time = np.append(self.time, t)
@@ -171,7 +171,16 @@ class CustomStriptool(Striptool):
         self.plot.line(x="x", y="y", line_width=2, source=self.source)
         self.plot.yaxis.axis_label = self.live_variable
 
-        self.plot.xaxis.formatter = DatetimeTickFormatter(hourmin = ['%H:%M'])
+        # as its scales, the plot uses all definedformats
+        self.plot.xaxis.formatter = DatetimeTickFormatter(
+            minutes= "%H:%M:%S", 
+            minsec="%H:%M:%S", 
+            seconds="%H:%M:%S", 
+            microseconds="%H:%M:%S", 
+            milliseconds="%H:%M:%S"
+        )
+
+        self.plot.xaxis.major_label_orientation = "vertical"
 
         # add units to label
         if self.pv_monitors[self.live_variable].units:
@@ -274,7 +283,7 @@ for variable in variable_params:
     striptool = CustomStriptool([input_variables[variable]], controller, prefix, limit=striptool_limit)
     striptool.plot.xaxis.axis_label_text_font_size = '7pt'
     striptool.plot.yaxis.axis_label_text_font_size = '7pt'
-    striptool.plot.xaxis.major_label_text_font_size = "6pt"
+    striptool.plot.xaxis.major_label_text_font_size = "8pt"
     striptool.plot.yaxis.major_label_text_font_size = "6pt"
     callbacks.append(striptool.update)
     striptools.append(striptool.plot)
@@ -316,7 +325,7 @@ for variable in scalar_outputs:
     striptool.plot.yaxis.axis_label = output_labels[variable] + f" ({striptool.pv_monitors[variable].units})"
     striptool.plot.xaxis.axis_label_text_font_size = '7pt'
     striptool.plot.yaxis.axis_label_text_font_size = '7pt'
-    striptool.plot.xaxis.major_label_text_font_size = "6pt"
+    striptool.plot.xaxis.major_label_text_font_size = "8pt"
     striptool.plot.yaxis.major_label_text_font_size = "6pt"
     striptools.append(striptool.plot)
 
@@ -340,12 +349,19 @@ callbacks.append(fixed_image.update)
 
 output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
-title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'})
+title_div = Div(text=f"<b class='centered-text'>LCLS-CU-INJ</b> {datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'})
 input_div_label = Div(text="<b>INPUTS</b>", style={'font-size': '150%', 'color': '#3881e8'}, name="input_title")
 output_div_label = Div(text="<b>OUTPUTS</b>", style={'font-size': '150%', 'color': '#3881e8'})
+
+def update_title():
+    title_div.text = f"<b class='centered-text'>LCLS-CU-INJ {datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}</b>"
+
+callbacks.append(update_title)
+
 curdoc().theme="dark_minimal"
 curdoc().add_root(
     column(
+        row(title_div, sizing_mode="scale_width"),
         row(
             column(input_div_label, input_value_table.table, sizing_mode="scale_width"), 
             column(output_div_label, output_value_table.table, sizing_mode="scale_width"), 

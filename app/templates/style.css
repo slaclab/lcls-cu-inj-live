@@ -1,4 +1,5 @@
 body { background-color: #15191C;
+    width: 100%
 }
 
 .slick-header-column {
@@ -13,7 +14,7 @@ body { background-color: #15191C;
 .slick-cell {
     background-color:#15191C;
     background-image: none;
-    font-size:1.5vh;
+    font-size: 1.5vh;
     font-family: Helvetica;
     font-style: normal;
     color:#FFFFFF;
@@ -27,4 +28,11 @@ body { background-color: #15191C;
         width: 157vh;
         max-width: 157vh;
         max-height: 88vh;
+}
+
+.centered-text {
+    display : block;
+    margin : 0 auto;
+    text-align: center;
+    width: 157vh;
 }
