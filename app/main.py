@@ -1,11 +1,15 @@
 import argparse
-
+from typing import Tuple, List
+from datetime import datetime
+import time
+import numpy as np
 from bokeh.plotting import figure
 from bokeh.io import curdoc
 from bokeh.layouts import column, row, gridplot
 from bokeh.server.server import Server
 from bokeh import palettes
-from bokeh.models import Div, Label, Spacer, ColumnDataSource, TableColumn, StringFormatter, DataTable
+from bokeh.models import Div, Label, Spacer, ColumnDataSource, TableColumn, StringFormatter, DataTable, Button, Select
+from bokeh.models.formatters import DatetimeTickFormatter
 from lume_epics.client.controller import Controller
 from bokeh.models.widgets import HTMLTemplateFormatter
 from bokeh.themes import built_in_themes
@@ -13,10 +17,12 @@ from bokeh.themes import built_in_themes
 from lume_epics.client.widgets.tables import ValueTable 
 from lume_epics.client.widgets.controls import build_sliders, EntryTable
 from lume_epics.client.widgets.plots import Striptool, ImagePlot
+from lume_epics.client.monitors import PVTimeSeries
+
 
 from bokeh.util.compiler import TypeScript
 from lume_model.utils import variables_from_yaml
-
+from lume_model.variables import ScalarVariable
 import sys
 
 parser = argparse.ArgumentParser(description='Parse bokeh args.')
@@ -26,6 +32,29 @@ parser.add_argument('protocol', type=str, help="Protocol for accessing pvs.", ch
 args = parser.parse_args()
 prefix = args.prefix
 protocol = args.protocol
+
+
+
+def time_to_microseconds(t):
+    t = t.time()
+    dmin = datetime.min
+    dummy_tdelta = (datetime.combine(dmin, t) - dmin)
+    return dummy_tdelta.total_seconds()*1000
+
+class PVTimeSeriesTimestamped(PVTimeSeries):
+    def poll(self) -> Tuple[np.ndarray]:
+        """
+        Collects image data via appropriate protocol and returns time and data.
+
+        """
+        t = datetime.now()
+        t = time_to_microseconds(t)
+        v = self.controller.get_value(self.pvname)
+
+        self.time = np.append(self.time, t)
+        self.data = np.append(self.data, v)
+
+        return self.time, self.data
 
 
 class FixedImagePlot(ImagePlot):
@@ -91,6 +120,64 @@ class CustomStriptool(Striptool):
     depending on the live process variable.
 
     """
+
+
+    def __init__(
+        self, variables: List[ScalarVariable], controller: Controller, prefix: str, limit: int = None, aspect_ratio: float = 1.05
+    ) -> None:
+        """
+        Set up monitors, current process variable, and data source.
+
+        Args:
+            variables (List[ScalarVariable]): List of variables to display with striptool
+
+            controller (Controller): Controller object for getting process variable values
+
+            prefix (str): Prefix used for server.
+
+            limit (int): Maximimum steps for striptool to render
+
+            aspect_ratio (float): Ratio of width to height
+
+        """
+        self.pv_monitors = {}
+
+        for variable in variables:
+            self.pv_monitors[variable.name] = PVTimeSeriesTimestamped(prefix, variable, controller)
+
+        self.live_variable = list(self.pv_monitors.keys())[0]
+
+        ts = []
+        ys = []
+        self.source = ColumnDataSource(dict(x=ts, y=ys))
+        self.reset_button = Button(label="Reset")
+        self.reset_button.on_click(self._reset_values)
+        self._aspect_ratio = aspect_ratio
+        self._limit = limit
+        self.selection =  Select(
+            title="Variable to plot:",
+            value=self.live_variable,
+            options=list(self.pv_monitors.keys()),
+        )
+        self.selection.on_change("value", self.update_selection)
+        self.build_plot()
+
+
+    def build_plot(self) -> None:
+        """
+        Creates the plot object.
+        """
+        self.plot = figure(sizing_mode="scale_both", aspect_ratio=self._aspect_ratio, x_axis_type='datetime')
+        self.plot.line(x="x", y="y", line_width=2, source=self.source)
+        self.plot.yaxis.axis_label = self.live_variable
+
+        self.plot.xaxis.formatter = DatetimeTickFormatter(hourmin = ['%H:%M'])
+
+        # add units to label
+        if self.pv_monitors[self.live_variable].units:
+            self.plot.yaxis.axis_label += (
+                f" ({self.pv_monitors[self.live_variable].units})"
+            )
 
     def update(self) -> None:
         """
