@@ -1,0 +1,15 @@
+{% extends base %}
+
+<!-- goes in head -->
+{% block preamble %}
+<style type="text/css">{% include 'style.css' %}</style>
+{% endblock %}
+
+{% block contents %}
+<div class="box">
+    {{ embed(doc) if doc.elementid }}
+    {% for root in doc.roots %}
+        {{ embed(root) | indent(10) }}
+    {% endfor %}
+</div>
+{% endblock %}

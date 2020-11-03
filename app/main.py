@@ -51,16 +51,6 @@ class CustomStriptool(Striptool):
 
 
 
-# Use custom text size for table
-template="""
-            <span style="font-size:18px">
-                <%= value %>
-            </span>
-         """
-
-formatter =  HTMLTemplateFormatter(template=template)
-
-
 # Override datatable update. Use sig digits
 class CustomValueTable(ValueTable):
     """
@@ -91,13 +81,13 @@ class CustomValueTable(ValueTable):
         self.source = ColumnDataSource(table_data)
         columns = [
             TableColumn(
-                field="x", title="Variable", formatter=formatter
+                field="x", title="Variable"
             ),
-            TableColumn(field="y", title="Value", formatter=formatter),
+            TableColumn(field="y", title="Value"),
         ]
 
         self.table = DataTable(
-            source=self.source, columns=columns, index_position=None, autosize_mode = "fit_columns"
+            source=self.source, columns=columns, index_position=None, autosize_mode = 'fit_columns'
         )
 
 
@@ -197,23 +187,25 @@ callbacks.append(image.update)
 
 output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
-title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': 'blue', 'text-align': 'center'})
-input_div_label = Div(text="<b>INPUTS</b>", style={'font-size': '150%', 'color': 'blue'})
-output_div_label = Div(text="<b>OUTPUTS</b>", style={'font-size': '150%', 'color': 'blue'})
-
+title_div = Div(text="<b>LCLS-CU-INJ</b>", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'})
+input_div_label = Div(text="<b>INPUTS</b>", style={'font-size': '150%', 'color': '#3881e8'}, name="input_title")
+output_div_label = Div(text="<b>OUTPUTS</b>", style={'font-size': '150%', 'color': '#3881e8'})
+curdoc().theme="dark_minimal"
 curdoc().add_root(
     column(
         row(
-            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), column(output_div_label, image.plot, sizing_mode="scale_both"), column(Spacer(height=30), output_value_table.table, sizing_mode="scale_width"), sizing_mode="scale_both", height_policy="fit"
+            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), 
+            column(output_div_label, image.plot, sizing_mode="scale_both"), 
+            column(Spacer(height=30), output_value_table.table, sizing_mode="scale_width"), 
+            sizing_mode="scale_both", 
         ),
         input_div_label,
         input_grid,
         output_div_label,
         output_grid,
-        height = 675, width=1200, sizing_mode="scale_both"
+        sizing_mode="stretch_both",
     )
 )
-curdoc().theme = 'dark_minimal'
 
 for callback in callbacks:
     curdoc().add_periodic_callback(callback, 250)

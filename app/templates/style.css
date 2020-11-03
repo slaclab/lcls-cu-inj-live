@@ -1,0 +1,28 @@
+body { background-color: #15191C;
+}
+
+.slick-header-column {
+    background-color: #15191C !important;
+    font-family: Helvetica;
+    font-size:18px;
+    font-style: normal;
+    color:#FFFFFF;
+    border-color: #3b3a37;
+  }
+
+.slick-cell {
+    background-color:#15191C;
+    background-image: none;
+    font-size:1.5vh;
+    font-family: Helvetica;
+    font-style: normal;
+    color:#FFFFFF;
+    border-color: #3b3a37;
+    border-bottom: solid 1px #ffffff;
+}
+
+.box {
+        display: block;
+        height: 66vh;
+        max-width: 118vh;
+}
