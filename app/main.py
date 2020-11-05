@@ -757,7 +757,8 @@ fixed_image.plot.sizing_mode = "scale_both"
 fixed_image.plot.toolbar_location=None
 callbacks.append(fixed_image.update)
 
-
+#system figure
+sys_fig = Div(text="<b class='centered-text'>YAG02</b><img src='app/static/cu_inj_layout.png'  class='sys-fig'/>", sizing_mode="scale_both", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'})
 output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
 
@@ -774,10 +775,10 @@ callbacks.append(update_title)
 curdoc().theme="dark_minimal"
 curdoc().add_root(
     column(
-        row(title_div, sizing_mode="scale_width"),
+        row(title_div, sizing_mode="scale_both"),
         row(
-            column(input_div_label, input_value_table.table, sizing_mode="scale_width"), 
-            column(output_div_label, output_value_table.table, sizing_mode="scale_width"), 
+            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), 
+            column(output_div_label, output_value_table.table, sizing_mode="scale_both"), 
             column(image.plot, sizing_mode="scale_both"),
             column(fixed_image.plot, sizing_mode="scale_both"),
             sizing_mode="scale_both", 
@@ -786,7 +787,8 @@ curdoc().add_root(
         input_grid,
         output_div_label,
         output_grid,
-        sizing_mode="stretch_both",
+        row(sys_fig, sizing_mode="scale_both"),
+        sizing_mode="scale_both",
     )
 )
 
