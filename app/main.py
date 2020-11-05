@@ -23,9 +23,9 @@ from bokeh.themes import built_in_themes
 from lume_epics.client.widgets.tables import ValueTable 
 from lume_epics.client.widgets.controls import build_sliders, EntryTable
 from lume_epics.client.widgets.plots import Striptool, ImagePlot
-from lume_epics.client.monitors import PVTimeSeries
+from lume_epics.client.monitors import PVTimeSeries, PVImage
 
-
+from lume_model.variables import ImageVariable
 from lume_model.utils import variables_from_yaml
 from lume_model.variables import ScalarVariable
 import sys
@@ -310,7 +310,128 @@ class PVTimeSeriesTimestamped(PVTimeSeries):
         return self.time, self.data
 
 
+class CorrectedImagePlot(ImagePlot):
+    """
+    Object for viewing and updating an image plot.
+
+    Attributes:
+        live_variable (str): Current variable to be displayed
+
+        source (ColumnDataSource): Data source for the viewer.
+
+        pv_monitors (PVImage): Monitors for the process variables.
+
+        plot (Figure): Bokeh figure object for rendering.
+
+        img_obj (GlyphRenderer): Bokeh glyph renderer for displaying image.
+
+    Example:
+
+        ```
+        prefix = "test"
+
+        # controller initialized to use Channel Access
+        controller = Controller("ca")
+
+        value_table = ImagePlot(
+                [output_variables["image_variable"]], 
+                controller, 
+                prefix
+            )
+
+        ```
+    """
+
+    def __init__(
+        self, variables: List[ImageVariable], controller: Controller, prefix: str
+    ) -> None:
+        """
+        Initialize monitors, current process variable, and data source.
+
+        Args:
+            variables (List[ImageVariable]): List of image variables to include in plot
+
+            controller (Controller): Controller object for getting pv values
+
+            prefix (str): Prefix used for server
+
+        """
+        self.pv_monitors = {}
+
+        for variable in variables:
+            self.pv_monitors[variable.name] = PVImage(prefix, variable, controller)
+
+        self.live_variable = list(self.pv_monitors.keys())[0]
+        image_data = DEFAULT_IMAGE_DATA
+        image_data["image"][0] = np.flipud(image_data["image"][0].T)
+
+        self.source = ColumnDataSource(image_data)
+
+
+    def update(self, live_variable: str = None) -> None:
+        """
+        Callback which updates the plot to reflect updated process variable values or 
+        new process variable.
+
+        Args:
+            live_variable (str): Variable to display
+        """
+        # update internal pv trackinng
+        if live_variable:
+            self.live_variable = live_variable
+
+        # update axis and labels
+        axis_labels = self.pv_monitors[self.live_variable].axis_labels
+        axis_units = self.pv_monitors[self.live_variable].axis_units
+
+        x_axis_label = axis_labels[0]
+        y_axis_label = axis_labels[1]
+
+        if axis_units:
+            x_axis_label += " (" + axis_units[0] + ")"
+            y_axis_label += " (" + axis_units[1] + ")"
+
+        self.plot.xaxis.axis_label = x_axis_label
+        self.plot.yaxis.axis_label = y_axis_label
+
+        # get image data
+        image_data = self.pv_monitors[self.live_variable].poll()
+        image_data["image"][0] = np.flipud(image_data["image"][0].T)
+
+        self.source.data.update(image_data)
+
+
+
 class FixedImagePlot(ImagePlot):
+
+    def __init__(
+        self, variables: List[ImageVariable], controller: Controller, prefix: str
+    ) -> None:
+        """
+        Initialize monitors, current process variable, and data source.
+
+        Args:
+            variables (List[ImageVariable]): List of image variables to include in plot
+
+            controller (Controller): Controller object for getting pv values
+
+            prefix (str): Prefix used for server
+
+        """
+        self.pv_monitors = {}
+
+        for variable in variables:
+            self.pv_monitors[variable.name] = PVImage(prefix, variable, controller)
+
+        self.live_variable = list(self.pv_monitors.keys())[0]
+
+        image_data = DEFAULT_IMAGE_DATA
+
+        image_data["image"][0] = np.flipud(image_data["image"][0].T)
+
+        self.source = ColumnDataSource(image_data)
+
+
     def build_plot(
         self, palette, color_mapper=None
     ) -> None:
@@ -365,6 +486,39 @@ class FixedImagePlot(ImagePlot):
 
         self.plot.xaxis.axis_label = x_axis_label
         self.plot.yaxis.axis_label = y_axis_label
+
+    def update(self, live_variable: str = None) -> None:
+        """
+        Callback which updates the plot to reflect updated process variable values or 
+        new process variable.
+
+        Args:
+            live_variable (str): Variable to display
+        """
+        # update internal pv trackinng
+        if live_variable:
+            self.live_variable = live_variable
+
+        # update axis and labels
+        axis_labels = self.pv_monitors[self.live_variable].axis_labels
+        axis_units = self.pv_monitors[self.live_variable].axis_units
+
+        x_axis_label = axis_labels[0]
+        y_axis_label = axis_labels[1]
+
+        if axis_units:
+            x_axis_label += " (" + axis_units[0] + ")"
+            y_axis_label += " (" + axis_units[1] + ")"
+
+        self.plot.xaxis.axis_label = x_axis_label
+        self.plot.yaxis.axis_label = y_axis_label
+
+        # get image data
+        image_data = self.pv_monitors[self.live_variable].poll()
+
+        image_data["image"][0] = np.flipud(image_data["image"][0].T)
+
+        self.source.data.update(image_data)
 
 
 # Override striptool update. Label was being replaced
@@ -561,7 +715,7 @@ scalar_outputs = [
 
 # create labels to be used with output striptool
 output_labels = {
-    "end_n_particle": "n_particles",
+    "end_n_particle": "n particles",
     "end_norm_emit_x": "norm emit x",
     "end_norm_emit_y": "norm emit y",
     "end_sigma_x": "σₓ",
@@ -585,7 +739,8 @@ for variable in scalar_outputs:
     striptool.plot.yaxis.major_label_text_font_size = "6pt"
     striptools.append(striptool.plot)
 
-image = ImagePlot([output_variables["x:y"]], controller, prefix)
+
+image = CorrectedImagePlot([output_variables["x:y"]], controller, prefix)
 image.build_plot(pal)
 image.plot.xaxis.major_label_text_font_size = "6pt"
 image.plot.yaxis.major_label_text_font_size = "6pt"
@@ -601,6 +756,7 @@ fixed_image.plot.yaxis.major_label_text_font_size = "6pt"
 fixed_image.plot.sizing_mode = "scale_both"
 fixed_image.plot.toolbar_location=None
 callbacks.append(fixed_image.update)
+
 
 output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
 
