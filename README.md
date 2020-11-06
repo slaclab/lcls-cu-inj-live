@@ -50,3 +50,22 @@ The pre-built read only client may be launched using:
 ```
 $ bokeh serve app --args {PREFIX} {PROTOCOL}
 ```
+
+
+## Instructions to run at LCLS
+
+As of now, it is recommended to run everything from mcc-simul.
+
+```shell script
+ssh mcc-simul
+# If not yet checked out:
+git clone https://github.com/slaclab/lcls-cu-inj-live.git
+cd lcls-cu-inj-live
+# Start the model server and PV bridge
+./start_all &
+```
+
+### If running the model server outside of mcc-simul
+
+- Edit start_webserver, change line 6 and replace `mcc-simul` with the hostname
+with the proper one for the model server so the web server can reach the PVs.

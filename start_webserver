@@ -1,0 +1,8 @@
+#!/bin/bash
+source $PACKAGE_TOP/anaconda/envs/lume-demo/bin/activate
+export PYTHONPATH=$(pwd):$PYTHONPATH
+source $EPICS_SETUP/envSet_prodOnDev.bash
+export EPICS_CA_ADDR_LIST="$EPICS_CA_ADDR_LIST 127.255.255.255"
+export EPICS_PVA_ADDR_LIST="$EPICS_PVA_ADDR_LIST mcc-simul"
+
+bokeh serve client.py --allow-websocket-origin="$HOSTNAME:5006" --port 5006
