@@ -772,9 +772,9 @@ def update_title():
     global controller
     title_div.text = f"<b>LCLS-CU-INJ: Last input update {controller.last_update}</b>"
 
-input_value_table.table.height=165
+input_value_table.table.height=175
 input_value_table.table.width=400
-output_value_table.table.height=165
+output_value_table.table.height=175
 output_value_table.table.width=400
 
 callbacks.append(update_title)
