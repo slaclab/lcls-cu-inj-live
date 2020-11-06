@@ -1,0 +1,28 @@
+[
+  {
+    "PV": "ca://${PREFIX}:distgen:r_dist:sigma_xy:value",
+    "LABEL": "distgen:r_dist:sigma_xy:value",
+    "TITLE": "distgen:r_dist:sigma_xy:value"
+  },
+{
+    "PV": "ca://${PREFIX}:distgen:t_dist:length:value",
+    "LABEL": "distgen:t_dist:length:value",
+    "TITLE": "distgen:t_dist:length:value"
+  },{
+    "PV": "ca://${PREFIX}:SOL1:solenoid_field_scale",
+    "LABEL": "SOL1:solenoid_field_scale",
+    "TITLE": "SOL1:solenoid_field_scale"
+  },{
+    "PV": "ca://${PREFIX}:CQ01:b1_gradient",
+    "LABEL": "CQ01:b1_gradient",
+    "TITLE": "CQ01:b1_gradient"
+  },{
+    "PV": "ca://${PREFIX}:SQ01:b1_gradient",
+    "LABEL": "SQ01:b1_gradient",
+    "TITLE": "SQ01:b1_gradient"
+  },{
+    "PV": "ca://${PREFIX}:L0A_phase:dtheta0_deg",
+    "LABEL": "L0A_phase:dtheta0_deg",
+    "TITLE": "L0A_phase:dtheta0_deg"
+  }
+]

@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1383</width>
+    <height>977</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+background-color: rgb(16, 19, 21);
+}
+
+QLabel[styleclass=&quot;title&quot;]{
+color: rgb(22, 104, 236);
+}
+
+QLabel {
+color: white;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,1,1">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,1">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="title_1">
+           <property name="font">
+            <font>
+             <pointsize>36</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>INPUTS</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="styleclass" stdset="0">
+            <string>title</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>distgen:r_dist:sigma_xy:value</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0" colspan="2">
+          <widget class="QLabel" name="title_2">
+           <property name="font">
+            <font>
+             <pointsize>36</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>OUTPUTS</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="styleclass" stdset="0">
+            <string>title</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>SOL1:solenoid_field_scale</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:distgen:r_dist:sigma_xy:value</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>end_sigma_x</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_16">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>end_n_particle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_6">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:L0A_phase:dtheta0_deg</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Variable</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>end_norm_emit_y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>L0A_phase:dtheta0_deg</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLabel" name="label_11">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Value</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="label_15">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>end_norm_emit_x</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>CQ01:b1_gradient</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_4">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:CQ01:b1_gradient</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>end_sigma_y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>distgen:t_dist:length:value</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>SQ01:b1_gradient</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_3">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:SOL1:solenoid_field_scale</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Variable</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_5">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:SQ01:b1_gradient</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_2">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:distgen:t_dist:length:value</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Value</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="0">
+          <widget class="QLabel" name="label_17">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>end_higher_order_energy_spread</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_9">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:end_n_particle</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_10">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:end_norm_emit_x</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_7">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:end_norm_emit_y</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_12">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:end_sigma_x</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_11">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:end_sigma_y</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="PyDMLabel" name="PyDMLabel_8">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="precision" stdset="0">
+            <number>4</number>
+           </property>
+           <property name="precisionFromPV" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="channel" stdset="0">
+            <string>ca://${PREFIX}:end_higher_order_energy_spread</string>
+           </property>
+           <property name="displayFormat" stdset="0">
+            <enum>PyDMLabel::Exponential</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,1">
+       <item>
+        <widget class="QLabel" name="title_3">
+         <property name="font">
+          <font>
+           <pointsize>36</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Screens</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="styleclass" stdset="0">
+          <string>title</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="PyDMDrawingImage" name="PyDMDrawingImage">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="filename" stdset="0">
+          <string>cu_inj_layout_inverted.png</string>
+         </property>
+         <property name="aspectRatioMode" stdset="0">
+          <enum>Qt::KeepAspectRatio</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,1">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_22">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Surrogate Model</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="PyDMImageView" name="PyDMImageView">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>300</height>
+              </size>
+             </property>
+             <property name="colorMap" stdset="0">
+              <enum>PyDMImageView::Viridis</enum>
+             </property>
+             <property name="autoDownsample" stdset="0">
+              <bool>true</bool>
+             </property>
+             <property name="normalizeData" stdset="0">
+              <bool>true</bool>
+             </property>
+             <property name="readingOrder" stdset="0">
+              <enum>PyDMImageView::Clike</enum>
+             </property>
+             <property name="imageChannel" stdset="0">
+              <string>ca://${PREFIX}:x:y:ArrayData_RBV</string>
+             </property>
+             <property name="widthChannel" stdset="0">
+              <string>ca://${PREFIX}:x:y:ArraySizeX_RBV</string>
+             </property>
+             <property name="showAxes" stdset="0">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="PyDMLabel" name="PyDMLabel_13">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="text">
+              <string>YAG02 - State: Unknown</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;name&quot;: &quot;New Rule&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;YAG02 - State: \&quot;+[\&quot;OUT\&quot;, \&quot;IN\&quot;, \&quot;INCONSISTENT\&quot;, \&quot;MOVING\&quot;][int(ch[0])]&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://YAGS:IN20:241:TGT_STS.RVAL&quot;, &quot;trigger&quot;: true}]}]</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="PyDMImageView" name="PyDMImageView_2">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>300</height>
+              </size>
+             </property>
+             <property name="colorMap" stdset="0">
+              <enum>PyDMImageView::Viridis</enum>
+             </property>
+             <property name="autoDownsample" stdset="0">
+              <bool>true</bool>
+             </property>
+             <property name="normalizeData" stdset="0">
+              <bool>true</bool>
+             </property>
+             <property name="readingOrder" stdset="0">
+              <enum>PyDMImageView::Clike</enum>
+             </property>
+             <property name="imageChannel" stdset="0">
+              <string>ca://YAGS:IN20:241:IMAGE</string>
+             </property>
+             <property name="widthChannel" stdset="0">
+              <string>ca://YAGS:IN20:241:ROI_XNP</string>
+             </property>
+             <property name="showAxes" stdset="0">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="title_4">
+     <property name="font">
+      <font>
+       <pointsize>36</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Inputs and Outputs - 10 Minutes Window</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="styleclass" stdset="0">
+      <string>title</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="title_5">
+       <property name="font">
+        <font>
+         <pointsize>24</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>INPUTS</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="styleclass" stdset="0">
+        <string>title</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PyDMTemplateRepeater" name="PyDMTemplateRepeater">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="layoutType" stdset="0">
+        <enum>PyDMTemplateRepeater::Horizontal</enum>
+       </property>
+       <property name="layoutSpacing" stdset="0">
+        <number>4</number>
+       </property>
+       <property name="countShownInDesigner" stdset="0">
+        <number>6</number>
+       </property>
+       <property name="templateFilename" stdset="0">
+        <string>template_plot.ui</string>
+       </property>
+       <property name="dataSource" stdset="0">
+        <string>inputs.json</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="title_6">
+       <property name="font">
+        <font>
+         <pointsize>24</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>OUTPUTS</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="styleclass" stdset="0">
+        <string>title</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PyDMTemplateRepeater" name="PyDMTemplateRepeater_2">
+       <property name="toolTip">
+        <string/>
+       </property>
+       <property name="layoutType" stdset="0">
+        <enum>PyDMTemplateRepeater::Horizontal</enum>
+       </property>
+       <property name="layoutSpacing" stdset="0">
+        <number>4</number>
+       </property>
+       <property name="countShownInDesigner" stdset="0">
+        <number>6</number>
+       </property>
+       <property name="templateFilename" stdset="0">
+        <string>template_plot.ui</string>
+       </property>
+       <property name="dataSource" stdset="0">
+        <string>outputs.json</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMDrawingImage</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.drawing</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMImageView</class>
+   <extends>QWidget</extends>
+   <header>pydm.widgets.image</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMTemplateRepeater</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.template_repeater</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
