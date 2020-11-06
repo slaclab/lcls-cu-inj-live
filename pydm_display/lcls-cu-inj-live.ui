@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1383</width>
-    <height>977</height>
+    <height>981</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@ color: white;
           <widget class="QLabel" name="title_1">
            <property name="font">
             <font>
-             <pointsize>36</pointsize>
+             <pointsize>28</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -70,7 +70,7 @@ color: white;
           <widget class="QLabel" name="title_2">
            <property name="font">
             <font>
-             <pointsize>36</pointsize>
+             <pointsize>28</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -556,7 +556,7 @@ color: white;
         <widget class="QLabel" name="title_3">
          <property name="font">
           <font>
-           <pointsize>36</pointsize>
+           <pointsize>28</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -637,6 +637,9 @@ color: white;
              <property name="widthChannel" stdset="0">
               <string>ca://${PREFIX}:x:y:ArraySizeX_RBV</string>
              </property>
+             <property name="maxRedrawRate" stdset="0">
+              <number>10</number>
+             </property>
              <property name="showAxes" stdset="0">
               <bool>true</bool>
              </property>
@@ -701,6 +704,9 @@ color: white;
              <property name="widthChannel" stdset="0">
               <string>ca://YAGS:IN20:241:ROI_XNP</string>
              </property>
+             <property name="maxRedrawRate" stdset="0">
+              <number>10</number>
+             </property>
              <property name="showAxes" stdset="0">
               <bool>true</bool>
              </property>
@@ -725,7 +731,7 @@ color: white;
     <widget class="QLabel" name="title_4">
      <property name="font">
       <font>
-       <pointsize>36</pointsize>
+       <pointsize>28</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -742,12 +748,15 @@ color: white;
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
+    <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QLabel" name="title_5">
        <property name="font">
         <font>
-         <pointsize>24</pointsize>
+         <pointsize>18</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -788,7 +797,7 @@ color: white;
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
+    <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -796,7 +805,7 @@ color: white;
       <widget class="QLabel" name="title_6">
        <property name="font">
         <font>
-         <pointsize>24</pointsize>
+         <pointsize>18</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>

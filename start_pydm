@@ -1,9 +1,10 @@
 #!/bin/bash
 source $PACKAGE_TOP/anaconda/envs/python3.7env/bin/activate
 source $EPICS_SETUP/envSet_prodOnDev.bash
-export EPICS_CA_ADDR_LIST="$EPICS_CA_ADDR_LIST 127.255.255.255"
+export EPICS_CA_ADDR_LIST="$EPICS_CA_ADDR_LIST 127.255.255.255 mcc-simul"
 export EPICS_PVA_ADDR_LIST="$EPICS_PVA_ADDR_LIST mcc-simul"
 
 MODEL_PV_PREFIX=test
 
-pydm -m PREFIX=${MODEL_PV_PREFIX} --hide-menu-bar --hide-nav-bar --hide-status-bar --stylesheet stylesheet.qss lcls-cu-inj-live.ui 
+pushd pydm_display
+pydm -m PREFIX=${MODEL_PV_PREFIX} --fullscreen --hide-menu-bar --hide-nav-bar --hide-status-bar --stylesheet stylesheet.qss lcls-cu-inj-live.ui
