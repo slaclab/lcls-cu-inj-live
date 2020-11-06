@@ -796,8 +796,8 @@ curdoc().add_root(
             column(
                 #row(sys_fig, sizing_mode="scale_height"),
                 row(image.plot, fixed_image.plot, sizing_mode="scale_width"),
-                Div(text="<b>YAG02</b>", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'}),
-                Div(text="<img src='app/static/cu_inj_layout.png'  class='sys-fig'/>"), sizing_mode=scale_mode,
+                Div(text="<b>YAG02</b>", style={'font-size': '150%', 'color': '#3881e8', 'width': '100%', 'text-align': 'center'}),
+                Div(text="<img src='app/static/cu_inj_layout.png'  class='sys-fig'/>", style={'text-align': 'center'}), sizing_mode=scale_mode,
             )
         ),
         input_div_label,
