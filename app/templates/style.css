@@ -1,10 +1,13 @@
 body { background-color: #15191C;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 .slick-header-column {
     background-color: #15191C !important;
     font-family: Helvetica;
-    font-size:18px;
+    font-size:15px;
     font-style: normal;
     color:#FFFFFF;
     border-color: #3b3a37;
@@ -21,23 +24,6 @@ body { background-color: #15191C;
     border-bottom: solid 1px #ffffff;
 }
 
-
-.box {
-    display: block;
-    height: calc(85vh-20px);
-    width: 150vh;
-    max-width: 150vh;
-    max-height: 85vh;
-}
-
-.centered-text {
-    display : block;
-    margin : 0 auto;
-    text-align: center;
-    width: 150vh;
-}
-
 .sys-fig {
-    width: 100%;
-    height: 100%;
+    width: 80%;
 }

@@ -37,6 +37,8 @@ parser.add_argument('protocol', type=str, help="Protocol for accessing pvs.", ch
 args = parser.parse_args()
 prefix = args.prefix
 protocol = args.protocol
+scale_mode = "scale_both"
+
 
 DEFAULT_IMAGE_DATA = {
     "image": [np.zeros((50, 50))],
@@ -448,7 +450,7 @@ class FixedImagePlot(ImagePlot):
         # create plot
         self.plot = figure(
             tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")],
-                sizing_mode="scale_both", x_range=(-8e-4,8e-4), y_range=(-8e-4,8e-4)
+                sizing_mode=scale_mode, x_range=(-8e-4,8e-4), y_range=(-8e-4,8e-4)
         )
 
         if color_mapper:
@@ -574,7 +576,7 @@ class CustomStriptool(Striptool):
         """
         Creates the plot object.
         """
-        self.plot = figure(sizing_mode="scale_both", aspect_ratio=self._aspect_ratio, x_axis_type='datetime')
+        self.plot = figure(sizing_mode=scale_mode, aspect_ratio=self._aspect_ratio, x_axis_type='datetime')
         self.plot.line(x="x", y="y", line_width=2, source=self.source)
         self.plot.yaxis.axis_label = self.live_variable
 
@@ -695,11 +697,12 @@ for variable in variable_params:
     striptool.plot.yaxis.axis_label_text_font_size = '7pt'
     striptool.plot.xaxis.major_label_text_font_size = "7pt"
     striptool.plot.yaxis.major_label_text_font_size = "6pt"
+    striptool.plot.sizing_mode = scale_mode
     callbacks.append(striptool.update)
     striptools.append(striptool.plot)
 
 # set up the input striptool grid
-input_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools = True, toolbar_location=None)
+input_grid =  gridplot(striptools,  ncols=6, sizing_mode="scale_height", merge_tools = True, toolbar_location=None)
 
 # filter variables
 image="x:y"
@@ -744,7 +747,7 @@ image = CorrectedImagePlot([output_variables["x:y"]], controller, prefix)
 image.build_plot(pal)
 image.plot.xaxis.major_label_text_font_size = "6pt"
 image.plot.yaxis.major_label_text_font_size = "6pt"
-image.plot.sizing_mode = "scale_both"
+image.plot.sizing_mode = scale_mode
 image.plot.toolbar_location=None
 callbacks.append(image.update)
 
@@ -753,42 +756,55 @@ fixed_image = FixedImagePlot([output_variables["x:y"]], controller, prefix)
 fixed_image.build_plot(pal)
 fixed_image.plot.xaxis.major_label_text_font_size = "6pt"
 fixed_image.plot.yaxis.major_label_text_font_size = "6pt"
-fixed_image.plot.sizing_mode = "scale_both"
+fixed_image.plot.sizing_mode = scale_mode
 fixed_image.plot.toolbar_location=None
 callbacks.append(fixed_image.update)
 
-#system figure
-sys_fig = Div(text="<b class='centered-text'>YAG02</b><img src='app/static/cu_inj_layout.png'  class='sys-fig'/>", sizing_mode="scale_both", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'})
-output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_both", merge_tools=True, toolbar_location=None)
+
+output_grid = gridplot(striptools,  ncols=6, sizing_mode="scale_height", merge_tools=True, toolbar_location=None)
 
 
-title_div = Div(text=f"<b class='centered-text'>LCLS-CU-INJ</b><b>Last input update: {controller.last_update}</b>", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'})
+title_div = Div(text=f"<b>LCLS-CU-INJ: Last input update {controller.last_update}</b>", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center', 'width':'100%'}, sizing_mode=scale_mode,)
 input_div_label = Div(text="<b>INPUTS</b>", style={'font-size': '150%', 'color': '#3881e8'}, name="input_title")
 output_div_label = Div(text="<b>OUTPUTS</b>", style={'font-size': '150%', 'color': '#3881e8'})
 
 def update_title():
     global controller
-    title_div.text = f"<b class='centered-text'>LCLS-CU-INJ</b><b>Last input update: {controller.last_update}</b>"
+    title_div.text = f"<b>LCLS-CU-INJ: Last input update {controller.last_update}</b>"
+
+input_value_table.table.height=165
+input_value_table.table.width=400
+output_value_table.table.height=165
+output_value_table.table.width=400
 
 callbacks.append(update_title)
+
+image.plot.aspect_ratio = 1.2
+fixed_image.plot.aspect_ratio = 1.2
 
 curdoc().theme="dark_minimal"
 curdoc().add_root(
     column(
-        row(title_div, sizing_mode="scale_both"),
+        row(title_div, sizing_mode="scale_width"),
         row(
-            column(input_div_label, input_value_table.table, sizing_mode="scale_both"), 
-            column(output_div_label, output_value_table.table, sizing_mode="scale_both"), 
-            column(image.plot, sizing_mode="scale_both"),
-            column(fixed_image.plot, sizing_mode="scale_both"),
-            sizing_mode="scale_both", 
+            column(
+                input_div_label,
+                input_value_table.table,
+                output_div_label,
+                output_value_table.table,
+            ),
+            column(
+                #row(sys_fig, sizing_mode="scale_height"),
+                row(image.plot, fixed_image.plot, sizing_mode="scale_width"),
+                Div(text="<b>YAG02</b>", style={'font-size': '150%', 'color': '#3881e8', 'text-align': 'center'}),
+                Div(text="<img src='app/static/cu_inj_layout.png'  class='sys-fig'/>"), sizing_mode=scale_mode,
+            )
         ),
         input_div_label,
         input_grid,
         output_div_label,
         output_grid,
-        row(sys_fig, sizing_mode="scale_both"),
-        sizing_mode="scale_both",
+        sizing_mode=scale_mode,
     )
 )
 

@@ -2,14 +2,23 @@
 
 <!-- goes in head -->
 {% block preamble %}
-<style type="text/css">{% include 'style.css' %}</style>
+<style type="text/css">
+{% include 'style.css' %}
+
+html, body, .bk-root {
+    width: 119vh;
+    height: 60vh;
+    margin: 0;
+}
+</style>
+
 {% endblock %}
 
 {% block contents %}
-<div class="box">
-    {{ embed(doc) if doc.elementid }}
-    {% for root in doc.roots %}
-        {{ embed(root) | indent(10) }}
-    {% endfor %}
-</div>
+<container>
+{{ embed(doc) if doc.elementid }}
+{% for root in doc.roots %}
+    {{ embed(root) | indent(10) }}
+{% endfor %}
+</container>
 {% endblock %}
