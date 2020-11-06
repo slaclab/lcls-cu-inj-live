@@ -450,7 +450,7 @@ class FixedImagePlot(ImagePlot):
         # create plot
         self.plot = figure(
             tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")],
-                sizing_mode=scale_mode, x_range=(-8e-4,8e-4), y_range=(-8e-4,8e-4)
+                sizing_mode=scale_mode, x_range=(-0.01,0.01), y_range=(-0.01,0.01)
         )
 
         if color_mapper:
