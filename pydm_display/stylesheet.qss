@@ -1,0 +1,11 @@
+* {
+background-color: rgb(16, 19, 21);
+}
+
+QLabel[styleclass="title"]{
+color: rgb(22, 104, 236);
+}
+
+QLabel {
+color: white;
+}

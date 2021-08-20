@@ -1,0 +1,28 @@
+[
+  {
+    "PV": "ca://${PREFIX}:end_n_particle",
+    "LABEL": "n Particles",
+    "TITLE": "n Particles"
+  },
+{
+    "PV": "ca://${PREFIX}:end_norm_emit_x",
+    "LABEL": "εₓ",
+    "TITLE": "εₓ"
+  },{
+    "PV": "ca://${PREFIX}:end_norm_emit_y",
+    "LABEL": "εᵧ",
+    "TITLE": "εᵧ"
+  },{
+    "PV": "ca://${PREFIX}:end_sigma_x",
+    "LABEL": "σₓ",
+    "TITLE": "σₓ"
+  },{
+    "PV": "ca://${PREFIX}:end_sigma_y",
+    "LABEL": "σᵧ",
+    "TITLE": "σᵧ"
+  },{
+    "PV": "ca://${PREFIX}:end_higher_order_energy_spread",
+    "LABEL": "Higher Order Energy Spread",
+    "TITLE": "Higher Order Energy Spread"
+  }
+]

@@ -43,6 +43,7 @@ class Bridge:
             pvname = row['device_pv_name']
             impact_name = row['impact_name']
             factor = row['impact_factor']
+            nn_comp = row['nn_compensation']
 
             if not pvname or pvname in self._denylist:
                 logger.debug(f'Skipping pv {pvname} as it is in the deny list.')
@@ -62,6 +63,7 @@ class Bridge:
                 f'{self._model_pv_prefix}{impact_name}'
             )
             self._mapping[pvname]['impact_factor'] = factor
+            self._mapping[pvname]['nn_compensation'] = nn_comp
 
     def _process_pv(self, pvname, value, *args, **kwargs):
         """
@@ -83,7 +85,10 @@ class Bridge:
         mapping = self._mapping[pvname]
         model_pv = mapping['model_pv']
         factor = mapping['impact_factor']
-        impact_value = value * factor
+        nn_comp = mapping['nn_compensation']
+        impact_value = (value+nn_comp) * factor
+        if model_pv.connected:
+            print(f'Processing PV ({pvname} | Model ({model_pv}) -> value: {value} | compensation: {nn_comp} | factor: {factor} | impact: {impact_value}')
         thread = threading.Thread(target=self._dispatch,
                                   args=(model_pv, impact_value), daemon=True)
         thread.start()
@@ -177,7 +182,7 @@ def get_parser():
         help='The entries to be ignored from the mapping file.',
         nargs='*',
         default=['IRIS:LR20:130:CONFG_SEL', 'LASR:IN20:475:PWR1H',
-                 'GUN:IN20:1:GN1_ADES'],
+                 'GUN:IN20:1:GN1_ADES','ACCL:IN20:300:L0A_ADES'],
         required=False
     )
     parser.add_argument(
