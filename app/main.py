@@ -450,7 +450,7 @@ class FixedImagePlot(ImagePlot):
         # create plot
         self.plot = figure(
             tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image")],
-                sizing_mode=scale_mode, x_range=(-8e-4,8e-4), y_range=(-8e-4,8e-4)
+                sizing_mode=scale_mode, x_range=(-0.01,0.01), y_range=(-0.01,0.01)
         )
 
         if color_mapper:
@@ -772,15 +772,15 @@ def update_title():
     global controller
     title_div.text = f"<b>LCLS-CU-INJ: Last input update {controller.last_update}</b>"
 
-input_value_table.table.height=165
+input_value_table.table.height=175
 input_value_table.table.width=400
-output_value_table.table.height=165
+output_value_table.table.height=175
 output_value_table.table.width=400
 
 callbacks.append(update_title)
 
-image.plot.aspect_ratio = 1.25
-fixed_image.plot.aspect_ratio = 1.25
+image.plot.aspect_ratio = 1.2
+fixed_image.plot.aspect_ratio = 1.2
 
 curdoc().theme="dark_minimal"
 curdoc().add_root(
@@ -797,8 +797,7 @@ curdoc().add_root(
                 #row(sys_fig, sizing_mode="scale_height"),
                 row(image.plot, fixed_image.plot, sizing_mode="scale_width"),
                 Div(text="<b>YAG02</b>", style={'font-size': '150%', 'color': '#3881e8', 'width': '100%', 'text-align': 'center'}),
-                Div(text="<img src='app/static/cu_inj_layout.png' class='sys-fig'/>", style={'text-align': 'center', 'width': '100%'}, sizing_mode="scale_width"), 
-                sizing_mode=scale_mode,
+                Div(text="<img src='app/static/cu_inj_layout.png'  class='sys-fig'/>", style={'text-align': 'center'}), sizing_mode=scale_mode,
             )
         ),
         input_div_label,

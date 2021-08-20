@@ -1,0 +1,27 @@
+[
+  {
+    "PV": "ca://${PREFIX}:distgen:r_dist:sigma_xy:value",
+    "LABEL": "",
+    "TITLE": "distgen:r_dist:sigma_xy:value"
+  },{
+    "PV": "ca://SOLN:IN20:121:BDES",
+    "LABEL": "",
+    "TITLE": "SOLN:IN20:121:BDES - EPICS"
+  },{
+    "PV": "ca://${PREFIX}:SOL1:solenoid_field_scale",
+    "LABEL": "",
+    "TITLE": "SOL1:solenoid_field_scale - Model"
+  },{
+    "PV": "ca://${PREFIX}:CQ01:b1_gradient",
+    "LABEL": "",
+    "TITLE": "CQ01:b1_gradient"
+  },{
+    "PV": "ca://${PREFIX}:SQ01:b1_gradient",
+    "LABEL": "",
+    "TITLE": "SQ01:b1_gradient"
+  },{
+    "PV": "ca://${PREFIX}:L0A_phase:dtheta0_deg",
+    "LABEL": "",
+    "TITLE": "L0A_phase:dtheta0_deg"
+  }
+]

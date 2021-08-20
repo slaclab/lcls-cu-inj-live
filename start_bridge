@@ -3,9 +3,7 @@ source $PACKAGE_TOP/anaconda/envs/lume-demo/bin/activate
 export PYTHONPATH=$(pwd):$PYTHONPATH
 source $EPICS_SETUP/envSet_prodOnDev.bash
 export EPICS_CA_ADDR_LIST="$EPICS_CA_ADDR_LIST 127.255.255.255"
-export EPICS_PVA_ADDR_LIST="$EPICS_PVA_ADDR_LIST mcc-simul"
 
 MODEL_PV_PREFIX=test
-PROTOCOL=pva
 
-bokeh serve app --allow-websocket-origin="$HOSTNAME:5006" --port 5006  --args ${MODEL_PV_PREFIX} ${PROTOCOL}
+python bridge.py --model_pv_prefix "${MODEL_PV_PREFIX}:"
